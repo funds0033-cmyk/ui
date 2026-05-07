@@ -5,30 +5,38 @@ type BadgeVariant =
   | "success"
   | "warning"
   | "error"
-  | "purple"
+  | "primary"
   | "teal"
-  | "outline";
+  | "purple";
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
   dot?: boolean;
 }
 
-const variantStyles: Record<BadgeVariant, string> = {
-  default:
-    "bg-[var(--color-surface)] text-[var(--color-charcoal)] border border-[var(--color-hairline)]",
-  success: "bg-[var(--color-card-tint-mint)] text-[var(--color-brand-green)]",
-  warning: "bg-[var(--color-card-tint-peach)] text-[var(--color-brand-orange)]",
-  error: "bg-[#fde8e8] text-[var(--color-semantic-error)]",
-  purple: "bg-[var(--color-primary)] text-[var(--color-on-primary)]",
-  teal: "bg-[var(--color-card-tint-sky)] text-[var(--color-brand-teal)]",
-  outline:
-    "bg-transparent text-[var(--color-steel)] border border-[var(--color-hairline-strong)]",
+const variants: Record<BadgeVariant, string> = {
+  default: "bg-surface-2 text-text-2 border border-border-2",
+  success: "bg-green-dim text-green border border-green/20",
+  warning: "bg-orange-dim text-orange border border-orange/20",
+  error: "bg-red-dim text-red border border-red/20",
+  primary: "bg-primary/20 text-primary border border-primary/30",
+  teal: "bg-teal-dim text-teal border border-teal/20",
+  purple: "bg-purple-dim text-purple border border-purple/20",
+};
+
+const dotColors: Record<BadgeVariant, string> = {
+  default: "bg-text-3",
+  success: "bg-green",
+  warning: "bg-orange",
+  error: "bg-red",
+  primary: "bg-primary",
+  teal: "bg-teal",
+  purple: "bg-purple",
 };
 
 export function Badge({
   variant = "default",
-  dot = false,
+  dot,
   className,
   children,
   ...props
@@ -36,9 +44,8 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-[var(--rounded-full)] px-[10px] py-[4px]",
-        "text-[var(--font-size-caption)] font-semibold leading-[var(--line-height-caption)]",
-        variantStyles[variant],
+        "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide",
+        variants[variant],
         className,
       )}
       {...props}
@@ -46,14 +53,8 @@ export function Badge({
       {dot && (
         <span
           className={cn(
-            "w-1.5 h-1.5 rounded-full flex-shrink-0",
-            variant === "success" && "bg-[var(--color-brand-green)]",
-            variant === "warning" && "bg-[var(--color-brand-orange)]",
-            variant === "error" && "bg-[var(--color-semantic-error)]",
-            variant === "purple" && "bg-white",
-            variant === "teal" && "bg-[var(--color-brand-teal)]",
-            (variant === "default" || variant === "outline") &&
-              "bg-[var(--color-steel)]",
+            "w-1.5 h-1.5 rounded-full shrink-0",
+            dotColors[variant],
           )}
         />
       )}

@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "ghost" | "destructive" | "link";
+type Variant = "primary" | "secondary" | "ghost" | "destructive";
 type Size = "sm" | "md" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,21 +12,18 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
 }
 
-const variantStyles: Record<Variant, string> = {
-  primary:
-    "bg-[var(--color-primary)] text-[var(--color-on-primary)] hover:bg-[var(--color-primary-pressed)] active:bg-[var(--color-primary-deep)]",
+const variants: Record<Variant, string> = {
+  primary: "bg-primary text-text-inv hover:bg-primary-h",
   secondary:
-    "bg-transparent text-[var(--color-ink)] border border-[var(--color-hairline-strong)] hover:bg-[var(--color-surface)]",
-  ghost:
-    "bg-transparent text-[var(--color-ink)] hover:bg-[var(--color-surface)]",
-  destructive: "bg-[var(--color-semantic-error)] text-white hover:opacity-90",
-  link: "bg-transparent text-[var(--color-link-blue)] underline-offset-4 hover:underline p-0 h-auto",
+    "bg-transparent text-text border border-border-2 hover:bg-surface-2",
+  ghost: "bg-transparent text-text-2 hover:bg-surface-2 hover:text-text",
+  destructive: "bg-red-dim text-red border border-red/20 hover:bg-red/20",
 };
 
-const sizeStyles: Record<Size, string> = {
-  sm: "h-8 px-3 text-[var(--font-size-caption)]",
-  md: "h-9 px-[18px] text-[var(--font-size-button-md)]",
-  lg: "h-11 px-6 text-[var(--font-size-body-md)]",
+const sizes: Record<Size, string> = {
+  sm: "h-7 px-3 text-[11px] gap-1.5",
+  md: "h-8 px-3.5 text-[12px] gap-2",
+  lg: "h-9 px-4 text-[13px] gap-2",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -34,8 +31,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       variant = "primary",
       size = "md",
-      asChild = false,
-      loading = false,
+      asChild,
+      loading,
       className,
       disabled,
       children,
@@ -49,23 +46,21 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          "inline-flex items-center justify-center gap-2 font-medium transition-colors cursor-pointer select-none",
-          "rounded-[var(--rounded-md)] leading-[var(--line-height-button-md)]",
-          "disabled:opacity-50 disabled:cursor-not-allowed",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1",
-          variantStyles[variant],
-          sizeStyles[size],
+          "inline-flex items-center justify-center font-medium rounded-md transition-colors cursor-pointer select-none",
+          "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+          "disabled:opacity-40 disabled:cursor-not-allowed",
+          variants[variant],
+          sizes[size],
           className,
         )}
         {...props}
       >
         {loading && (
-          <span className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+          <span className="w-3 h-3 border border-current border-t-transparent rounded-full animate-spin shrink-0" />
         )}
         {children}
       </Comp>
     );
   },
 );
-
 Button.displayName = "Button";

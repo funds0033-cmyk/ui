@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-[var(--font-size-body-sm)] font-medium text-[var(--color-charcoal)] leading-[var(--line-height-body-sm)]"
+            className="text-[11px] font-medium text-text-2"
           >
             {label}
           </label>
@@ -24,31 +24,21 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            "h-11 w-full rounded-[var(--rounded-md)] border bg-[var(--color-canvas)] px-[var(--spacing-md)]",
-            "text-[var(--font-size-body-md)] text-[var(--color-ink)] leading-[var(--line-height-body-md)]",
-            "placeholder:text-[var(--color-muted)]",
-            "transition-colors outline-none",
+            "h-8 w-full rounded-md border bg-surface-2 px-3",
+            "text-[12px] text-text placeholder:text-text-3",
+            "outline-none transition-colors",
             error
-              ? "border-[var(--color-semantic-error)] focus:border-[var(--color-semantic-error)] focus:ring-1 focus:ring-[var(--color-semantic-error)]"
-              : "border-[var(--color-hairline-strong)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]",
-            "disabled:opacity-50 disabled:cursor-not-allowed",
+              ? "border-red/50 focus:border-red focus:ring-1 focus:ring-red/30"
+              : "border-border focus:border-border-2 focus:ring-1 focus:ring-primary/30",
+            "disabled:opacity-40 disabled:cursor-not-allowed",
             className,
           )}
           {...props}
         />
-        {error && (
-          <p className="text-[var(--font-size-caption)] text-[var(--color-semantic-error)]">
-            {error}
-          </p>
-        )}
-        {hint && !error && (
-          <p className="text-[var(--font-size-caption)] text-[var(--color-steel)]">
-            {hint}
-          </p>
-        )}
+        {error && <p className="text-[10px] text-red">{error}</p>}
+        {hint && !error && <p className="text-[10px] text-text-3">{hint}</p>}
       </div>
     );
   },
 );
-
 Input.displayName = "Input";

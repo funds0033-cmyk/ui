@@ -8,26 +8,24 @@ export function WalletScreen() {
   const { address, isConnected, disconnectWallet, network } = useSorokit();
 
   return (
-    <div className="space-y-[var(--spacing-xl)]">
+    <div className="space-y-4">
       <div>
-        <h2 className="text-[var(--font-size-heading-4)] font-semibold text-[var(--color-ink)] leading-[var(--line-height-heading-4)]">
-          Wallet
-        </h2>
-        <p className="text-[var(--font-size-body-sm)] text-[var(--color-steel)] mt-1">
+        <h2 className="text-[13px] font-semibold text-text">Wallet</h2>
+        <p className="text-[11px] text-text-3 mt-0.5">
           Manage your connected wallet
         </p>
       </div>
 
-      {/* Status card */}
-      <div className="rounded-[var(--rounded-lg)] border border-[var(--color-hairline)] bg-[var(--color-canvas)] p-[var(--spacing-xl)]">
+      {/* Status */}
+      <div className="rounded-lg border border-border bg-surface p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-[13px] font-bold flex-shrink-0">
-              {address ? address.slice(0, 2) : "??"}
+            <div className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-[11px] font-bold text-primary shrink-0">
+              {address ? address.slice(0, 2) : "—"}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[var(--font-size-body-sm)] font-medium text-[var(--color-charcoal)]">
+                <span className="text-[12px] font-medium text-text">
                   {isConnected ? "Connected" : "Disconnected"}
                 </span>
                 <Badge variant={isConnected ? "success" : "default"} dot>
@@ -35,10 +33,7 @@ export function WalletScreen() {
                 </Badge>
               </div>
               {address && (
-                <span
-                  data-address
-                  className="text-[var(--font-size-caption)] text-[var(--color-slate)]"
-                >
+                <span data-address className="mt-0.5 block">
                   {truncateAddress(address, 12, 6)}
                 </span>
               )}
@@ -52,7 +47,7 @@ export function WalletScreen() {
         </div>
 
         {network && (
-          <div className="mt-4 pt-4 border-t border-[var(--color-hairline)] flex items-center gap-4 flex-wrap">
+          <div className="mt-3 pt-3 border-t border-border grid grid-cols-2 gap-3">
             <InfoItem label="Network" value={network.name} />
             <InfoItem label="RPC" value={network.rpcUrl} mono />
           </div>
@@ -75,11 +70,11 @@ function InfoItem({
 }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-[11px] font-semibold uppercase tracking-[1px] text-[var(--color-stone)]">
+      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-3">
         {label}
       </span>
       <span
-        className={`text-[var(--font-size-caption)] text-[var(--color-charcoal)] ${mono ? "font-[var(--font-family-mono)]" : ""}`}
+        className={`text-[11px] text-text-2 break-all ${mono ? "font-mono" : ""}`}
       >
         {value}
       </span>

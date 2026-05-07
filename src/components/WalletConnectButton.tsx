@@ -11,25 +11,18 @@ export function WalletConnectButton({ onOpenModal }: WalletConnectButtonProps) {
 
   if (isConnected && address) {
     return (
-      <Button variant="secondary" size="sm" onClick={onOpenModal}>
-        <span className="w-2 h-2 rounded-full bg-[var(--color-brand-green)] flex-shrink-0" />
-        <span
-          data-address
-          className="font-[var(--font-family-mono)] text-[var(--font-size-caption)]"
-        >
-          {truncateAddress(address)}
-        </span>
-      </Button>
+      <button
+        onClick={onOpenModal}
+        className="inline-flex items-center gap-2 h-7 px-3 rounded-md bg-surface-2 border border-border hover:border-border-2 transition-colors cursor-pointer"
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-green shrink-0" />
+        <span data-address>{truncateAddress(address)}</span>
+      </button>
     );
   }
 
   return (
-    <Button
-      variant="primary"
-      size="sm"
-      loading={isConnecting}
-      onClick={connectWallet}
-    >
+    <Button size="sm" loading={isConnecting} onClick={connectWallet}>
       {isConnecting ? "Connecting…" : "Connect Wallet"}
     </Button>
   );

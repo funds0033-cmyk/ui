@@ -11,7 +11,6 @@ import { truncateAddress } from "@/lib/utils";
 
 export function AccountCard() {
   const { address, account, isLoadingAccount } = useSorokit();
-
   if (!address) return null;
 
   return (
@@ -27,36 +26,30 @@ export function AccountCard() {
       </CardHeader>
       <CardContent>
         {isLoadingAccount ? (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-4 rounded bg-[var(--color-surface)] animate-pulse"
-              />
+              <div key={i} className="h-3 rounded bg-surface-2 animate-pulse" />
             ))}
           </div>
         ) : (
           <div className="space-y-3">
-            <Row label="Address">
-              <span
-                data-address
-                className="text-[var(--font-size-caption)] text-[var(--color-slate)] break-all"
-              >
+            <Field label="Address">
+              <span data-address className="break-all">
                 {address}
               </span>
-            </Row>
+            </Field>
             {account && (
               <>
-                <Row label="Sequence">
-                  <span className="font-mono text-[var(--font-size-caption)] text-[var(--color-charcoal)]">
+                <Field label="Sequence">
+                  <span className="font-mono text-[11px] text-text-2">
                     {account.sequence}
                   </span>
-                </Row>
-                <Row label="Subentries">
-                  <span className="text-[var(--font-size-body-sm)] text-[var(--color-charcoal)]">
+                </Field>
+                <Field label="Subentries">
+                  <span className="text-[12px] text-text">
                     {account.subentryCount}
                   </span>
-                </Row>
+                </Field>
               </>
             )}
           </div>
@@ -66,7 +59,7 @@ export function AccountCard() {
   );
 }
 
-function Row({
+function Field({
   label,
   children,
 }: {
@@ -75,7 +68,7 @@ function Row({
 }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-micro-uppercase text-[var(--color-stone)] text-[11px] font-semibold tracking-[1px] uppercase">
+      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-3">
         {label}
       </span>
       {children}
@@ -87,16 +80,11 @@ export function AccountCardCompact() {
   const { address } = useSorokit();
   if (!address) return null;
   return (
-    <div className="flex items-center gap-2 px-3 py-2 rounded-[var(--rounded-md)] bg-[var(--color-surface)] border border-[var(--color-hairline)]">
-      <div className="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0">
+    <div className="flex items-center gap-2 px-2.5 py-2 rounded-md bg-surface-2 border border-border">
+      <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-[10px] font-bold text-white shrink-0">
         {address.slice(0, 2)}
       </div>
-      <span
-        data-address
-        className="text-[var(--font-size-caption)] text-[var(--color-charcoal)]"
-      >
-        {truncateAddress(address)}
-      </span>
+      <span data-address>{truncateAddress(address)}</span>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { NetworkSwitcher } from "@/components/NetworkSwitcher";
 import { useSorokit } from "@/context/SorokitProvider";
 import type { NavSection } from "@/components/Sidebar";
 
-const SECTION_LABELS: Record<NavSection, string> = {
+const LABELS: Record<NavSection, string> = {
   wallet: "Wallet",
   account: "Account",
   transactions: "Transactions",
@@ -11,28 +11,21 @@ const SECTION_LABELS: Record<NavSection, string> = {
   network: "Network",
 };
 
-interface TopBarProps {
-  activeSection: NavSection;
-}
-
-export function TopBar({ activeSection }: TopBarProps) {
+export function TopBar({ active }: { active: NavSection }) {
   const { error, clearError } = useSorokit();
 
   return (
-    <div className="flex-shrink-0">
-      {/* Error banner */}
+    <div className="shrink-0">
       {error && (
-        <div className="flex items-center justify-between gap-3 px-[var(--spacing-xl)] py-2.5 bg-[#fde8e8] border-b border-[var(--color-semantic-error)]/20">
-          <p className="text-[var(--font-size-caption)] text-[var(--color-semantic-error)]">
-            {error}
-          </p>
+        <div className="flex items-center justify-between gap-3 px-4 py-2 bg-red-dim border-b border-red/20">
+          <p className="text-[11px] text-red">{error}</p>
           <button
             onClick={clearError}
-            className="text-[var(--color-semantic-error)] opacity-60 hover:opacity-100 flex-shrink-0"
+            className="text-red opacity-60 hover:opacity-100 shrink-0"
           >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
               <path
-                d="M2 2L10 10M10 2L2 10"
+                d="M1.5 1.5L8.5 8.5M8.5 1.5L1.5 8.5"
                 stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"
@@ -41,12 +34,10 @@ export function TopBar({ activeSection }: TopBarProps) {
           </button>
         </div>
       )}
-
-      {/* Main topbar */}
-      <header className="h-14 flex items-center justify-between px-[var(--spacing-xl)] border-b border-[var(--color-hairline)] bg-[var(--color-canvas)]">
-        <h1 className="text-[var(--font-size-body-md)] font-semibold text-[var(--color-ink)]">
-          {SECTION_LABELS[activeSection]}
-        </h1>
+      <header className="h-12 flex items-center justify-between px-4 border-b border-border bg-surface shrink-0">
+        <span className="text-[12px] font-semibold text-text">
+          {LABELS[active]}
+        </span>
         <div className="flex items-center gap-2">
           <NetworkSwitcher />
           <WalletConnectButton />

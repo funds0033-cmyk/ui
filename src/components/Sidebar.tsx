@@ -9,29 +9,23 @@ export type NavSection =
   | "soroban"
   | "network";
 
-const NAV_ITEMS: { id: NavSection; label: string; icon: React.ReactNode }[] = [
+const NAV: { id: NavSection; label: string; icon: React.ReactNode }[] = [
   {
     id: "wallet",
     label: "Wallet",
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <rect
-          x="1.5"
-          y="4.5"
-          width="13"
-          height="9"
+          x="1"
+          y="3.5"
+          width="12"
+          height="8"
           rx="1.5"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
         />
-        <path d="M1.5 7.5H14.5" stroke="currentColor" strokeWidth="1.5" />
-        <path
-          d="M4.5 2.5L11.5 2.5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <circle cx="11" cy="10" r="1" fill="currentColor" />
+        <path d="M1 6.5H13" stroke="currentColor" strokeWidth="1.3" />
+        <circle cx="10" cy="9" r="0.8" fill="currentColor" />
       </svg>
     ),
   },
@@ -39,18 +33,12 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ReactNode }[] = [
     id: "account",
     label: "Account",
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle
-          cx="8"
-          cy="5.5"
-          r="2.5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="5" r="2.2" stroke="currentColor" strokeWidth="1.3" />
         <path
-          d="M2.5 13.5C2.5 11.0147 5.01472 9 8 9C10.9853 9 13.5 11.0147 13.5 13.5"
+          d="M2 12C2 9.79 4.24 8 7 8C9.76 8 12 9.79 12 12"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
         />
       </svg>
@@ -60,18 +48,18 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ReactNode }[] = [
     id: "transactions",
     label: "Transactions",
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <path
-          d="M2 5.5H14M10.5 2.5L13.5 5.5L10.5 8.5"
+          d="M2 4.5H12M9 2L12 4.5L9 7"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
-          d="M14 10.5H2M5.5 7.5L2.5 10.5L5.5 13.5"
+          d="M12 9.5H2M5 7L2 9.5L5 12"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -82,25 +70,25 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ReactNode }[] = [
     id: "soroban",
     label: "Soroban",
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <path
-          d="M5 3L2 8L5 13"
+          d="M4.5 2.5L2 7L4.5 11.5"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
-          d="M11 3L14 8L11 13"
+          d="M9.5 2.5L12 7L9.5 11.5"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
-          d="M9.5 2.5L6.5 13.5"
+          d="M8.5 2L5.5 12"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
         />
       </svg>
@@ -110,24 +98,24 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ReactNode }[] = [
     id: "network",
     label: "Network",
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.5" />
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.3" />
         <path
-          d="M8 2.5C8 2.5 10.5 5 10.5 8C10.5 11 8 13.5 8 13.5"
+          d="M7 2C7 2 9 4.5 9 7C9 9.5 7 12 7 12"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
         />
         <path
-          d="M8 2.5C8 2.5 5.5 5 5.5 8C5.5 11 8 13.5 8 13.5"
+          d="M7 2C7 2 5 4.5 5 7C5 9.5 7 12 7 12"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
         />
         <path
-          d="M2.5 8H13.5"
+          d="M2 7H12"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="1.3"
           strokeLinecap="round"
         />
       </svg>
@@ -137,59 +125,59 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ReactNode }[] = [
 
 interface SidebarProps {
   active: NavSection;
-  onNavigate: (section: NavSection) => void;
+  onNavigate: (s: NavSection) => void;
 }
 
 export function Sidebar({ active, onNavigate }: SidebarProps) {
   const { isConnected } = useSorokit();
 
   return (
-    <aside className="w-56 flex-shrink-0 h-full flex flex-col border-r border-[var(--color-hairline)] bg-[var(--color-surface-soft)]">
+    <aside className="w-52 shrink-0 h-full flex flex-col border-r border-border bg-surface">
       {/* Logo */}
-      <div className="h-14 flex items-center px-[var(--spacing-md)] border-b border-[var(--color-hairline)] flex-shrink-0">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-[var(--rounded-sm)] bg-[var(--color-primary)] flex items-center justify-center flex-shrink-0">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <div className="h-12 flex items-center px-4 border-b border-border shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center shrink-0">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path
-                d="M3 7C3 4.79086 4.79086 3 7 3C9.20914 3 11 4.79086 11 7C11 9.20914 9.20914 11 7 11"
+                d="M2 6C2 3.79 3.79 2 6 2C8.21 2 10 3.79 10 6C10 8.21 8.21 10 6 10"
                 stroke="white"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
               <path
-                d="M7 11C5.89543 11 5 10.1046 5 9C5 7.89543 5.89543 7 7 7"
+                d="M6 10C4.9 10 4 9.1 4 8C4 6.9 4.9 6 6 6"
                 stroke="white"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
-              <circle cx="7" cy="7" r="1" fill="white" />
+              <circle cx="6" cy="6" r="1" fill="white" />
             </svg>
           </div>
-          <span className="text-[var(--font-size-body-sm)] font-semibold text-[var(--color-ink)]">
+          <span className="text-[12px] font-semibold text-text tracking-tight">
             sorokit
           </span>
         </div>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto py-[var(--spacing-sm)] px-[var(--spacing-xs)]">
+      <nav className="flex-1 overflow-y-auto py-2 px-2">
         <div className="space-y-0.5">
-          {NAV_ITEMS.map((item) => (
+          {NAV.map((item) => (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
               className={cn(
-                "w-full flex items-center gap-2.5 px-3 py-2 rounded-[var(--rounded-md)] text-left transition-colors cursor-pointer",
-                "text-[var(--font-size-body-sm)] leading-[var(--line-height-body-sm)]",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]",
+                "w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-left transition-colors cursor-pointer",
+                "text-[12px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
                 active === item.id
-                  ? "bg-[var(--color-canvas)] text-[var(--color-ink)] font-medium shadow-[var(--shadow-subtle)] border border-[var(--color-hairline)]"
-                  : "text-[var(--color-steel)] hover:bg-[var(--color-hairline-soft)] hover:text-[var(--color-charcoal)]",
+                  ? "bg-surface-2 text-text font-medium"
+                  : "text-text-3 hover:bg-surface-2 hover:text-text-2",
               )}
             >
               <span
                 className={cn(
-                  active === item.id ? "text-[var(--color-primary)]" : "",
+                  "shrink-0",
+                  active === item.id ? "text-primary" : "",
                 )}
               >
                 {item.icon}
@@ -200,9 +188,9 @@ export function Sidebar({ active, onNavigate }: SidebarProps) {
         </div>
       </nav>
 
-      {/* Bottom — wallet compact */}
+      {/* Bottom */}
       {isConnected && (
-        <div className="p-[var(--spacing-sm)] border-t border-[var(--color-hairline)] flex-shrink-0">
+        <div className="p-2 border-t border-border shrink-0">
           <AccountCardCompact />
         </div>
       )}
