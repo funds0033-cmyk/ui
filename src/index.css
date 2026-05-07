@@ -12,7 +12,7 @@
 ───────────────────────────────────────────────────────── */
 @theme {
   /* ── Brand ── */
-  --color-brand: #5645d4; /* primary purple — change this to rebrand */
+  --color-brand: #5645d4; /* change this to rebrand */
   --color-brand-hover: #4534b3; /* brand hover/pressed state */
   --color-brand-dim: rgba(86, 69, 212, 0.12); /* brand tinted background */
 

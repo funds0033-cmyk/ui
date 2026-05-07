@@ -1,0 +1,126 @@
+import { useState } from "react";
+import { useSorokit } from "@/context/SorokitProvider";
+import { getClient } from "@/lib/client";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import { cn } from "@/lib/utils";
+import type { InvokeParams } from "@/lib/client";
+
+type InvokeState = "idle" | "loading" | "success" | "error";
+
+interface SorobanInvokeButtonProps {
+  /** The contract invocation params */
+  params: InvokeParams;
+  /** Button label */
+  label?: string;
+  /** Show result inline below the button */
+  showResult?: boolean;
+  /** Called on success with the result data */
+  onSuccess?: (data: unknown) => void;
+  /** Called on error */
+  onError?: (error: string) => void;
+  variant?: "primary" | "secondary" | "ghost";
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}
+
+export function SorobanInvokeButton({
+  params,
+  label,
+  showResult = true,
+  onSuccess,
+  onError,
+  variant = "primary",
+  size = "md",
+  className,
+}: SorobanInvokeButtonProps) {
+  const { isConnected } = useSorokit();
+  const [state, setState] = useState<InvokeState>("idle");
+  const [result, setResult] = useState<unknown>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function invoke() {
+    if (!isConnected) return;
+    setState("loading");
+    setResult(null);
+    setError(null);
+
+    try {
+      const { data, error: err } =
+        await getClient().soroban.invokeContract(params);
+      if (err) {
+        setError(err);
+        setState("error");
+        onError?.(err);
+        return;
+      }
+      setResult(data);
+      setState("success");
+      onSuccess?.(data);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Unknown error";
+      setError(msg);
+      setState("error");
+      onError?.(msg);
+    }
+  }
+
+  const buttonLabel = label ?? `${params.method}()`;
+
+  return (
+    <div className={cn("flex flex-col gap-2", className)}>
+      <div className="flex items-center gap-2">
+        <Button
+          variant={variant}
+          size={size}
+          loading={state === "loading"}
+          disabled={!isConnected}
+          onClick={invoke}
+          title={!isConnected ? "Connect wallet to invoke" : undefined}
+        >
+          {state === "loading" ? "Invoking…" : buttonLabel}
+        </Button>
+
+        {state === "success" && (
+          <Badge variant="success" dot>
+            Done
+          </Badge>
+        )}
+        {state === "error" && <Badge variant="error">Failed</Badge>}
+        {(state === "success" || state === "error") && (
+          <button
+            onClick={() => {
+              setState("idle");
+              setResult(null);
+              setError(null);
+            }}
+            className="text-[11px] text-ink-3 hover:text-ink-2 transition-colors"
+          >
+            Reset
+          </button>
+        )}
+      </div>
+
+      {showResult && state === "success" && result !== null && (
+        <div className="rounded-lg bg-[rgba(34,197,94,0.05)] border border-[rgba(34,197,94,0.15)] px-4 py-3">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-ink-4 mb-1.5">
+            Result
+          </p>
+          <pre className="text-[11px] font-mono text-ink-2 whitespace-pre-wrap break-all">
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        </div>
+      )}
+
+      {showResult && state === "error" && error && (
+        <div className="rounded-lg bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.15)] px-4 py-3">
+          <p className="text-[11px] text-red">{error}</p>
+        </div>
+      )}
+
+      {!isConnected && (
+        <p className="text-[11px] text-ink-3">Connect wallet to invoke</p>
+      )}
+    </div>
+  );
+}

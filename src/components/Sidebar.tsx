@@ -196,8 +196,8 @@ export function Sidebar({ active, onNavigate, open, onClose }: SidebarProps) {
                 key={item.id}
                 onClick={() => handleNav(item.id)}
                 className={cn(
-                  "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all cursor-pointer",
-                  "text-[13px] focus-visible:outline-none",
+                  "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all cursor-pointer",
+                  "text-[13px] focus-visible:outline-none mb-1",
                   active === item.id
                     ? "bg-surface-3 text-ink font-medium border border-line-2"
                     : "text-ink-3 hover:bg-surface-2 hover:text-ink-2 border border-transparent",
@@ -205,7 +205,7 @@ export function Sidebar({ active, onNavigate, open, onClose }: SidebarProps) {
               >
                 <span
                   className={cn(
-                    "shrink-0",
+                    "shrink-0 relative ",
                     active === item.id ? "text-brand" : "",
                   )}
                 >
@@ -213,7 +213,7 @@ export function Sidebar({ active, onNavigate, open, onClose }: SidebarProps) {
                 </span>
                 {item.label}
                 {active === item.id && (
-                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-brand shrink-0" />
+                  <span className="absolute left-0 top-0 button-0 w-[2px] bg-brand rounded-r-full" />
                 )}
               </button>
             ))}

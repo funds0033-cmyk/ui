@@ -83,7 +83,7 @@ export function AccountCardCompact() {
         {address.slice(0, 2).toUpperCase()}
       </div>
       <div className="flex flex-col gap-0.5 min-w-0">
-        <span className="text-[10px] text-ink-4 uppercase tracking-widest">
+        <span className="text-[9px] text-ink-4 uppercase tracking-widest">
           Connected
         </span>
         <span data-address className="truncate">

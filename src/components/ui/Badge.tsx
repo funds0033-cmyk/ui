@@ -48,16 +48,14 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-wide",
+        "inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-semibold tracking-wide",
         variants[variant],
         className,
       )}
       {...props}
     >
       {dot && (
-        <span
-          className={cn("w-1.5 h-1.5 rounded-full shrink-0", dots[variant])}
-        />
+        <span className={cn("w-1 h-1 rounded-full shrink-0", dots[variant])} />
       )}
       {children}
     </span>

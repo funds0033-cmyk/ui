@@ -3,15 +3,8 @@
  *
  * All UI components must use this module to access blockchain functionality.
  * No direct blockchain logic lives in the UI — everything goes through sorokit-core.
- *
- * Usage:
- *   import { getClient } from '@/lib/client'
- *   const client = getClient()
- *   await client.wallet.connect()
  */
 
-// Type-only import so the UI compiles even before sorokit-core is published.
-// Replace with the real import once sorokit-core is available on npm.
 export type SorokitClient = {
   wallet: {
     connect: () => Promise<{
@@ -33,6 +26,12 @@ export type SorokitClient = {
     getBalances: (
       address: string,
     ) => Promise<{ data: Balance[] | null; error: string | null }>;
+    getClaimableBalances: (
+      address: string,
+    ) => Promise<{ data: ClaimableBalance[] | null; error: string | null }>;
+    claimBalance: (
+      balanceId: string,
+    ) => Promise<{ data: TxResult | null; error: string | null }>;
   };
   transaction: {
     submit: (
@@ -45,11 +44,28 @@ export type SorokitClient = {
     getStatus: (
       txHash: string,
     ) => Promise<{ data: TxStatus | null; error: string | null }>;
+    getHistory: (
+      address: string,
+      page?: number,
+      limit?: number,
+    ) => Promise<{
+      data: Transaction[] | null;
+      error: string | null;
+      total: number;
+    }>;
+    estimateFee: () => Promise<{
+      data: { baseFee: string; recommended: string } | null;
+      error: string | null;
+    }>;
   };
   soroban: {
     invokeContract: (
       params: InvokeParams,
     ) => Promise<{ data: unknown; error: string | null; status: string }>;
+    getEvents: (
+      contractId: string,
+      limit?: number,
+    ) => Promise<{ data: ContractEvent[] | null; error: string | null }>;
   };
   network: {
     getNetwork: () => Promise<{
@@ -88,6 +104,34 @@ export type TxResult = {
 
 export type TxStatus = "pending" | "success" | "failed" | "not_found";
 
+export type Transaction = {
+  hash: string;
+  ledger: number;
+  createdAt: string;
+  successful: boolean;
+  operationCount: number;
+  feePaid: string;
+  memo?: string;
+};
+
+export type ClaimableBalance = {
+  id: string;
+  asset: string;
+  amount: string;
+  sponsor: string;
+  claimants: { destination: string; predicate: unknown }[];
+};
+
+export type ContractEvent = {
+  id: string;
+  contractId: string;
+  type: string;
+  ledger: number;
+  createdAt: string;
+  topics: string[];
+  value: unknown;
+};
+
 export type InvokeParams = {
   contractId: string;
   method: string;
@@ -106,23 +150,14 @@ export type NetworkInfo = {
 
 let _client: SorokitClient | null = null;
 
-/**
- * Initialize the sorokit client.
- * Call this once at app startup before using getClient().
- */
 export function initClient(client: SorokitClient): void {
   _client = client;
 }
 
-/**
- * Get the initialized sorokit client.
- * Throws if initClient() has not been called.
- */
 export function getClient(): SorokitClient {
-  if (!_client) {
+  if (!_client)
     throw new Error(
-      "[sorokit-ui] Client not initialized. Call initClient(createSorokitClient()) before rendering UI components.",
+      "[sorokit-ui] Client not initialized. Call initClient(createSorokitClient()) first.",
     );
-  }
   return _client;
 }

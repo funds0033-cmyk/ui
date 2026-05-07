@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Sidebar, type NavSection } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
+import { NetworkBanner } from "@/components/NetworkBanner";
 import { WalletScreen } from "@/screens/WalletScreen";
 import { AccountScreen } from "@/screens/AccountScreen";
 import { TransactionsScreen } from "@/screens/TransactionsScreen";
@@ -32,6 +33,7 @@ export function Dashboard() {
           active={active}
           onMenuToggle={() => setSidebarOpen((o) => !o)}
         />
+        <NetworkBanner />
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-[700px] mx-auto px-6 py-8 sm:px-10 sm:py-10">
             {SCREENS[active]}

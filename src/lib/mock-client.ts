@@ -1,9 +1,6 @@
 /**
- * mock-client.ts
- *
- * Simulates sorokit-core responses for development/demo.
+ * mock-client.ts — simulates sorokit-core for development/demo.
  * Replace with: import { createSorokitClient } from "sorokit-core"
- * when the package is published.
  */
 
 import type {
@@ -11,9 +8,16 @@ import type {
   Balance,
   AccountData,
   NetworkInfo,
+  Transaction,
+  ClaimableBalance,
+  ContractEvent,
 } from "./client";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const randHex = (len: number) =>
+  Array.from({ length: len }, () =>
+    Math.floor(Math.random() * 16).toString(16),
+  ).join("");
 
 const MOCK_ADDRESS = "GBAMQXTQ7IQKPZXJKZJQZJQZJQZJQZJQZJQZJQZJQZJQZJQZJQZJQ";
 
@@ -41,6 +45,43 @@ const MOCK_ACCOUNT: AccountData = {
   subentryCount: 3,
 };
 
+const MOCK_HISTORY: Transaction[] = Array.from({ length: 20 }, (_, i) => ({
+  hash: randHex(64),
+  ledger: 48291034 - i * 12,
+  createdAt: new Date(Date.now() - i * 3600000).toISOString(),
+  successful: i !== 3 && i !== 11,
+  operationCount: Math.floor(Math.random() * 3) + 1,
+  feePaid: (100 + Math.floor(Math.random() * 400)).toString(),
+  memo: i % 4 === 0 ? `memo-${i}` : undefined,
+}));
+
+const MOCK_CLAIMABLE: ClaimableBalance[] = [
+  {
+    id: "00000000" + randHex(56),
+    asset: "XLM",
+    amount: "25.0000000",
+    sponsor: "GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGZWM9CQJUQE3QLQZJQ",
+    claimants: [{ destination: MOCK_ADDRESS, predicate: null }],
+  },
+  {
+    id: "00000000" + randHex(56),
+    asset: "USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+    amount: "10.0000000",
+    sponsor: "GDQJUTQYK2MQX2VGDR2FYWLIYAQIEGXTQVTFEMGH0BELWGWHKJQ",
+    claimants: [{ destination: MOCK_ADDRESS, predicate: null }],
+  },
+];
+
+const MOCK_EVENTS: ContractEvent[] = Array.from({ length: 8 }, (_, i) => ({
+  id: randHex(32),
+  contractId: "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
+  type: ["transfer", "mint", "burn", "approve"][i % 4],
+  ledger: 48291035 - i * 5,
+  createdAt: new Date(Date.now() - i * 600000).toISOString(),
+  topics: [`topic_${i}_a`, `topic_${i}_b`],
+  value: { amount: (Math.random() * 1000).toFixed(7), from: MOCK_ADDRESS },
+}));
+
 const NETWORKS: Record<string, NetworkInfo> = {
   testnet: {
     name: "testnet",
@@ -59,6 +100,12 @@ const NETWORKS: Record<string, NetworkInfo> = {
     passphrase: "Test SDF Future Network ; October 2022",
     rpcUrl: "https://rpc-futurenet.stellar.org",
     horizonUrl: "https://horizon-futurenet.stellar.org",
+  },
+  localnet: {
+    name: "localnet",
+    passphrase: "Standalone Network ; February 2017",
+    rpcUrl: "http://localhost:8000/soroban/rpc",
+    horizonUrl: "http://localhost:8000",
   },
 };
 
@@ -81,37 +128,56 @@ export function createMockClient(): SorokitClient {
         await delay(300);
         connectedAddress = null;
       },
-      getAddress: async () => {
-        return { data: connectedAddress, error: null };
-      },
+      getAddress: async () => ({ data: connectedAddress, error: null }),
     },
 
     account: {
-      getAccount: async (_address: string) => {
+      getAccount: async () => {
         await delay(600);
         return { data: MOCK_ACCOUNT, error: null, status: "success" };
       },
-      getBalances: async (_address: string) => {
+      getBalances: async () => {
         await delay(800);
         return { data: MOCK_BALANCES, error: null };
+      },
+      getClaimableBalances: async () => {
+        await delay(700);
+        return { data: MOCK_CLAIMABLE, error: null };
+      },
+      claimBalance: async (_id) => {
+        await delay(1800);
+        return {
+          data: { hash: randHex(64), ledger: 48291036, successful: true },
+          error: null,
+        };
       },
     },
 
     transaction: {
-      submit: async (_tx: unknown) => {
+      submit: async () => {
         await delay(2000);
-        const hash = Array.from({ length: 64 }, () =>
-          Math.floor(Math.random() * 16).toString(16),
-        ).join("");
         return {
-          data: { hash, ledger: 48291034, successful: true },
+          data: { hash: randHex(64), ledger: 48291034, successful: true },
           error: null,
           status: "success",
         };
       },
-      getStatus: async (_txHash: string) => {
+      getStatus: async () => {
         await delay(400);
         return { data: "success", error: null };
+      },
+      getHistory: async (_address, page = 1, limit = 10) => {
+        await delay(700);
+        const start = (page - 1) * limit;
+        return {
+          data: MOCK_HISTORY.slice(start, start + limit),
+          error: null,
+          total: MOCK_HISTORY.length,
+        };
+      },
+      estimateFee: async () => {
+        await delay(300);
+        return { data: { baseFee: "100", recommended: "200" }, error: null };
       },
     },
 
@@ -127,6 +193,10 @@ export function createMockClient(): SorokitClient {
           error: null,
           status: "success",
         };
+      },
+      getEvents: async () => {
+        await delay(600);
+        return { data: MOCK_EVENTS, error: null };
       },
     },
 
