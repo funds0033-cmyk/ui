@@ -1,73 +1,258 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h1>sorokit-ui</h1>
 
-Currently, two official plugins are available:
+<p><strong>React component library for Stellar.</strong></p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+<p>
+  Drop-in UI primitives for wallet connection, transaction flows,<br/>
+  account display, and Soroban contract interaction — powered by <code>sorokit-core</code>.
+</p>
 
-## React Compiler
+<p>
+  <a href="https://github.com/Just-Bamford/sorokit-ui/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" />
+  </a>
+  <img src="https://img.shields.io/badge/react-%5E18.0-61dafb" alt="React 18" />
+  <img src="https://img.shields.io/badge/typescript-%5E5.0-3178c6" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/stellar-mainnet%20%7C%20testnet%20%7C%20futurenet-6f42c1" alt="Stellar Networks" />
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<p>Part of the <a href="https://github.com/Just-Bamford">sorokit</a> ecosystem.</p>
 
-## Expanding the ESLint configuration
+<br/>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+</div>
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Overview
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+`sorokit-ui` is the React layer of the sorokit ecosystem. It provides ready-to-use components that connect directly to `sorokit-core` — so you can add wallet connection, balance display, payment flows, and Soroban contract interaction to your app without building any of the wiring yourself.
+
+All components are unstyled by default and accept a `className` prop, making them compatible with Tailwind, CSS Modules, or any styling approach you already use.
+
+---
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Provider Setup](#provider-setup)
+- [Components](#components)
+- [Hooks](#hooks)
+- [Styling](#styling)
+- [Networks](#networks)
+- [Design Principles](#design-principles)
+- [License](#license)
+
+---
+
+## Installation
+
+```bash
+npm install sorokit-ui sorokit-core @creit.tech/stellar-wallets-kit
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Both `sorokit-core` and `@creit.tech/stellar-wallets-kit` are required peer dependencies.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Quick Start
+
+Wrap your app in `SorokitProvider`, then use components anywhere in the tree:
+
+```tsx
+import {
+  SorokitProvider,
+  ConnectWalletButton,
+  AccountBalance,
+} from "sorokit-ui";
+
+function App() {
+  return (
+    <SorokitProvider network="testnet">
+      <ConnectWalletButton />
+      <AccountBalance />
+    </SorokitProvider>
+  );
+}
 ```
+
+---
+
+## Provider Setup
+
+`SorokitProvider` initialises a `sorokit-core` client and makes it available to all child components via context.
+
+```tsx
+import { SorokitProvider } from "sorokit-ui";
+
+<SorokitProvider
+  network="testnet" // "mainnet" | "testnet" | "futurenet"
+  horizonUrl="https://..." // optional: override Horizon URL
+  rpcUrl="https://..." // optional: override Soroban RPC URL
+>
+  {children}
+</SorokitProvider>;
+```
+
+---
+
+## Components
+
+### Wallet
+
+```tsx
+// Connect / disconnect button with wallet picker
+<ConnectWalletButton />
+
+// Display the connected wallet's public key (truncated)
+<WalletAddress />
+
+// Show connection status
+<WalletStatus />
+```
+
+### Account
+
+```tsx
+// Display all balances for the connected account
+<AccountBalance />
+
+// Filter by asset
+<AccountBalance assetCode="USDC" excludeZero />
+
+// Display a single asset balance inline
+<AssetBalance assetCode="XLM" />
+```
+
+### Transactions
+
+```tsx
+// Pre-wired payment form: amount + destination + submit
+<PaymentForm
+  onSuccess={(result) => console.log(result)}
+  onError={(err) => console.error(err)}
+/>
+
+// Display a single transaction's status by hash
+<TransactionStatus hash="abc123..." />
+```
+
+### Soroban
+
+```tsx
+// Read a contract value and display it
+<ContractRead
+  contractId="C..."
+  method="get_balance"
+  args={[scAddress]}
+/>
+
+// Invoke a contract method with a connected wallet
+<ContractInvoke
+  contractId="C..."
+  method="transfer"
+  args={[scAddress, scAmount]}
+  onSuccess={(hash) => console.log(hash)}
+/>
+```
+
+---
+
+## Hooks
+
+If you need the underlying client or wallet state directly, hooks are available:
+
+```tsx
+import { useSorokit, useWallet, useAccount, useTransaction } from "sorokit-ui";
+
+// Access the raw sorokit-core client
+const { client } = useSorokit();
+
+// Wallet state and connect/disconnect actions
+const { publicKey, connected, connect, disconnect } = useWallet();
+
+// Account data for the connected wallet
+const { balances, loading, error } = useAccount();
+
+// Build and submit transactions
+const { buildPayment, submit, status } = useTransaction();
+```
+
+All hooks must be used inside a `SorokitProvider`.
+
+---
+
+## Styling
+
+Components are unstyled by default. Every component accepts a `className` prop:
+
+```tsx
+// Tailwind
+<ConnectWalletButton className="rounded-lg bg-indigo-600 px-4 py-2 text-white" />
+
+// CSS Modules
+<AccountBalance className={styles.balance} />
+```
+
+To apply a consistent base style across all components, pass a `classNames` map to the provider:
+
+```tsx
+<SorokitProvider
+  network="testnet"
+  classNames={{
+    connectButton: "rounded-lg bg-indigo-600 px-4 py-2 text-white",
+    accountBalance: "font-mono text-sm text-gray-700",
+  }}
+>
+  {children}
+</SorokitProvider>
+```
+
+---
+
+## Networks
+
+```tsx
+// Development
+<SorokitProvider network="testnet">
+
+// Production
+<SorokitProvider network="mainnet">
+
+// Bleeding edge
+<SorokitProvider network="futurenet">
+
+// Self-hosted infrastructure
+<SorokitProvider
+  network="mainnet"
+  horizonUrl="https://my-horizon.example.com"
+  rpcUrl="https://my-rpc.example.com"
+>
+```
+
+---
+
+## Design Principles
+
+**Composable** — every component does one thing. Combine them freely; there are no required groupings or wrapper hierarchies beyond the provider.
+
+**Unstyled by default** — no opinion about your design system. Bring Tailwind, CSS Modules, styled-components, or plain CSS.
+
+**Powered by sorokit-core** — all network logic lives in [`sorokit-core`](https://github.com/Just-Bamford/sorokit-core). Components are thin UI wrappers — no duplicated Stellar logic, no diverging behaviour between the SDK and the UI layer.
+
+**No-throw, all the way down** — error states are props and hook return values, never unhandled exceptions.
+
+---
+
+## Contributing
+
+Pull requests are welcome. For significant changes, please open an issue first to discuss what you'd like to change.
+
+---
+
+## License
+
+[MIT](LICENSE)
