@@ -1,7 +1,27 @@
 {
   "name": "sorokit-ui",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.1.0",
+  "description": "React component library for Stellar — drop-in UI primitives for wallet connection, transaction flows, account display, and Soroban contract interaction.",
+  "author": "sorokit contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Just-Bamford/sorokit-ui"
+  },
+  "bugs": {
+    "url": "https://github.com/Just-Bamford/sorokit-ui/issues"
+  },
+  "homepage": "https://github.com/Just-Bamford/sorokit-ui#readme",
+  "keywords": [
+    "stellar",
+    "soroban",
+    "wallet",
+    "react",
+    "components",
+    "ui",
+    "typescript"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",

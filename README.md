@@ -251,6 +251,21 @@ To apply a consistent base style across all components, pass a `classNames` map 
 
 Pull requests are welcome. For significant changes, please open an issue first to discuss what you'd like to change.
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed development guidelines, code style, and the PR process.
+
+---
+
+## Publishing to npm
+
+This package is now public (`"private": false` in package.json). To publish a new version:
+
+1. Update the version in `package.json`
+2. Update [CHANGELOG.md](CHANGELOG.md) with changes
+3. Create a GitHub release with tag `v{version}`
+4. CI automatically publishes to npm
+
+Requires `NPM_TOKEN` secret in GitHub repository settings.
+
 ---
 
 ## License
