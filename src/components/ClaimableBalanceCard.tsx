@@ -9,14 +9,21 @@ import type { ClaimableBalance } from "@/lib/client";
 function BalanceRow({ cb }: { cb: ClaimableBalance }) {
   const [claiming, setClaiming] = useState(false);
   const [claimed, setClaimed] = useState(false);
+  const [claimError, setClaimError] = useState<string | null>(null);
 
-  const assetCode = cb.asset.includes(":") ? cb.asset.split(":")[0] : cb.asset;
+  const rawCode = cb.asset.includes(":") ? cb.asset.split(":")[0] : cb.asset;
+  const assetCode = rawCode === "native" ? "XLM" : rawCode;
 
   async function handleClaim() {
     setClaiming(true);
+    setClaimError(null);
     try {
       const { error } = await getClient().account.claimBalance(cb.id);
-      if (!error) setClaimed(true);
+      if (error) {
+        setClaimError(error);
+        return;
+      }
+      setClaimed(true);
     } finally {
       setClaiming(false);
     }
@@ -47,14 +54,18 @@ function BalanceRow({ cb }: { cb: ClaimableBalance }) {
         </div>
       </div>
       {!claimed && (
-        <Button
-          size="sm"
-          loading={claiming}
-          onClick={handleClaim}
-          className="shrink-0"
-        >
-          Claim
-        </Button>
+        <div className="flex flex-col items-end gap-1.5 shrink-0">
+          <Button
+            size="sm"
+            loading={claiming}
+            onClick={handleClaim}
+          >
+            Claim
+          </Button>
+          {claimError && (
+            <p className="text-[12px] text-red text-right">{claimError}</p>
+          )}
+        </div>
       )}
     </div>
   );
