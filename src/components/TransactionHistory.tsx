@@ -160,6 +160,7 @@ export function TransactionHistory() {
                 <Button
                   variant="secondary"
                   size="sm"
+                  className="min-h-[44px] sm:min-h-0"
                   disabled={page <= 1}
                   onClick={() => setPage((p) => p - 1)}
                 >
@@ -174,6 +175,7 @@ export function TransactionHistory() {
                 <Button
                   variant="secondary"
                   size="sm"
+                  className="min-h-[44px] sm:min-h-0"
                   disabled={page >= totalPages}
                   onClick={() => setPage((p) => p + 1)}
                 >
